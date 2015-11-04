@@ -1,0 +1,10 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+  
+  socket.emit('message', 'I am alive');
+  
+  socket.on('message', function(e){
+	console.log(e);
+  });
+</script>
