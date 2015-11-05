@@ -1,3 +1,4 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
@@ -8,3 +9,23 @@
 	console.log(e);
   });
 </script>
+<script src="gameClass.js"></script>
+<script>
+	$(function(){
+		var canvas = $("#gameCanvas")[0];
+		var context = canvas.getContext("2d");
+		
+		canvas.width = 800;
+		canvas.height = 600;
+		context.width = 800;
+		context.height = 600;
+		
+		var sprite = new Image();
+		sprite.onload = function(){
+			StartGame(context, sprite);
+		};
+		sprite.src = "spritesheet.png";
+	});
+</script>
+<canvas id="gameCanvas" style="border: 1px solid #000; width: 800px; height: 600px">
+</canvas>

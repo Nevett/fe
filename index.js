@@ -1,9 +1,18 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var path = require('path');
 
 app.get('/', function(req, res){
 	res.sendfile('index.html');
+});
+
+app.get('/spritesheet.png', function (req, res) {
+    res.sendfile(__dirname + '\\spritesheet.png');
+});
+
+app.get('/gameClass.js', function (req, res) {
+    res.sendfile(__dirname + '\\gameClass.js');
 });
 
 var mySocket;
