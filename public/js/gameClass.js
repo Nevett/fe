@@ -1,7 +1,10 @@
 var StartGame = function()
 {
+	var _stageManager = NewStageManager();
+	
 	var _tileManager = NewTileManager();
 	var _soldierManager = NewSoldierManager();
+	
 	var _control = NewControl();
 	
 	setInterval(function(){

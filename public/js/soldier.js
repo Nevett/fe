@@ -14,11 +14,17 @@ var NewSoldier = function(x, y, soldierType, team)
 		}
 	}
 	
+	_me.GetPosition = function(){
+		return {x: x, y: y};
+	}
+	
 	_me.Draw = function(){
 		SpriteHandler.Draw(GetSprite(), {x: x * 20, y: y * 20});
-		console.log(team);
+		
 		SpriteHandler.Draw(team == Team.ENEMY ? Sprite.YOUR_UNIT : Sprite.THEIR_UNIT, {x: x * 20, y: y * 20});
 	}
+	
+	window.bus.pub('soldier place', _me);
 	
 	return _me;
 }
