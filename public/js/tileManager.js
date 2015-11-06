@@ -12,6 +12,10 @@ var NewTileManager = function(){
 		}
 	}
 	
+	_me.Update = function(){
+		
+	}
+	
 	_me.Draw = function(){
 		for(var i = 0; i < _tiles.length; i++)
 			for(var j = 0; j < _tiles[i].length; j++)

@@ -25,5 +25,6 @@ var Sprite = {
 	THEIR_UNIT: {x: 2, y: 2},
 	FADE_OUT: {x: 0, y: 3},
 	HEALTH_FULL: {x: 1, y: 3},
-	HEALTH_EMPTY: {x: 2, y: 3}
+	HEALTH_EMPTY: {x: 2, y: 3},
+	CURSOR: {x: 0, y: 4}
 };
