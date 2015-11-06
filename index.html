@@ -9,7 +9,12 @@
 	console.log(e);
   });
 </script>
-<script src="gameClass.js"></script>
+<script src="js/spriteHandler.js"></script>
+<script src="js/gameClass.js"></script>
+<script src="js/tileManager.js"></script>
+<script src="js/tile.js"></script>
+<script src="js/soldierManager.js"></script>
+<script src="js/soldier.js"></script>
 <script>
 	$(function(){
 		var canvas = $("#gameCanvas")[0];
@@ -22,7 +27,8 @@
 		
 		var sprite = new Image();
 		sprite.onload = function(){
-			StartGame(context, sprite);
+			SpriteHandler.Initialise(context, sprite);
+			StartGame();
 		};
 		sprite.src = "spritesheet.png";
 	});
