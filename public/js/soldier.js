@@ -1,6 +1,6 @@
 var NewSoldier = function(_position, _soldierType, _team)
 {
-	var _me = {id: Global.NewId()};
+	var _me = {id: Global.NewId(true)};
 	var _selected = false;
 	var _availableFights, _availableMoves;
 	
@@ -61,12 +61,16 @@ var NewSoldier = function(_position, _soldierType, _team)
 		for(var i = 0; i < _availableMoves.length; i++)
 			if(_availableMoves[i].x == position.x && _availableMoves[i].y == position.y)
 			{
-				_position = {x: position.x, y: position.y};
-				
+				_me.MoveTo(position);
+		
 				window.bus.pub('soldier move', _me);
 			}
 		
 		_me.Deselect();
+	}
+	
+	_me.MoveTo = function(position){
+		_position = {x: position.x, y: position.y};
 	}
 	
 	_me.MovementRange = function(){

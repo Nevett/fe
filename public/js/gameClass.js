@@ -3,7 +3,7 @@ var StartGame = function()
 	var _stageManager = NewStageManager();
 	
 	var _tileManager = NewTileManager();
-	var _soldierManager = NewSoldierManager();
+	var _soldierManager = NewSoldierManager(Math.round(Math.random()));
 	
 	var _control = NewControl();
 	
