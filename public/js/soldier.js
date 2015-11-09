@@ -47,6 +47,14 @@ var NewSoldier = function(_position, _soldierType, _team)
 		window.bus.pub('soldier move', _me);
 	}
 	
+	_me.MovementRange = function(){
+		return 4;
+	}
+	
+	_me.AttackRange = function(){
+		return {min: 1, max: 1};
+	}
+	
 	_me.Update = function(){
 		// not currently needed
 	}
