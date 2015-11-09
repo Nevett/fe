@@ -4,6 +4,8 @@ var NewSoldier = function(_position, _soldierType, _team)
 	var _selected = false;
 	var _availableFights, _availableMoves;
 	
+	var _displayMoves, _displayFights;
+	
 	var GetSprite = function(){
 		switch(_soldierType)
 		{
@@ -22,6 +24,10 @@ var NewSoldier = function(_position, _soldierType, _team)
 	
 	_me.Deselect = function(){
 		_selected = false;
+		
+		_availableMoves = _availableFights = _displayFights = _displayMoves = [];
+		
+		window.bus.pub('deselect');
 	}
 	
 	_me.Select = function(availableFights, availableMoves){
@@ -30,21 +36,37 @@ var NewSoldier = function(_position, _soldierType, _team)
 		_availableFights = availableFights;
 		_availableMoves = availableMoves;
 		
+		_displayFights = [];
+		_displayMoves = [];
+		
 		for(var i = 0; i < _availableMoves.length; i++)
-			for(var j = _availableFights.length-1; j >= 0; j--)
-				if(_availableFights[j].x == _availableMoves[i].x && _availableFights[j].y == _availableMoves[i].y)
-					_availableFights.splice(j, 1);
-			
-		console.log(_availableFights);
+			_displayMoves.push(_availableMoves[i]);
+		
+		for(var i = 0; i < _availableFights.length; i++) {
+			var displayFight = true;
+			for(var j = 0; j < _availableMoves.length; j++)
+				if(_availableFights[i].x == _availableMoves[j].x && _availableFights[i].y == _availableMoves[j].y) {
+					displayFight = false;
+					break;
+				}
+			if(displayFight)
+				_displayFights.push(_availableFights[i]);
+		}
 	}
 	
 	_me.SelectGround = function(position){
 		if(!_selected)
 			return;
 		
-		_position = {x: position.x, y: position.y};
+		for(var i = 0; i < _availableMoves.length; i++)
+			if(_availableMoves[i].x == position.x && _availableMoves[i].y == position.y)
+			{
+				_position = {x: position.x, y: position.y};
+				
+				window.bus.pub('soldier move', _me);
+			}
 		
-		window.bus.pub('soldier move', _me);
+		_me.Deselect();
 	}
 	
 	_me.MovementRange = function(){
@@ -69,11 +91,11 @@ var NewSoldier = function(_position, _soldierType, _team)
 		
 		SpriteHandler.Draw(Sprite.SELECTION, {x: _position.x * 20, y: _position.y * 20});
 		
-		for(var i = 0; i < _availableMoves.length; i++)
-			SpriteHandler.Draw(Sprite.BLUE, {x: _availableMoves[i].x * 20, y: _availableMoves[i].y * 20});
+		for(var i = 0; i < _displayMoves.length; i++)
+			SpriteHandler.Draw(Sprite.BLUE, {x: _displayMoves[i].x * 20, y: _displayMoves[i].y * 20});
 		
-		for(var i = 0; i < _availableFights.length; i++)
-			SpriteHandler.Draw(Sprite.RED, {x: _availableFights[i].x * 20, y: _availableFights[i].y * 20});
+		for(var i = 0; i < _displayFights.length; i++)
+			SpriteHandler.Draw(Sprite.RED, {x: _displayFights[i].x * 20, y: _displayFights[i].y * 20});
 	}
 	
 	window.bus.pub('soldier place', _me);

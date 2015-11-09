@@ -55,6 +55,10 @@ var NewStageManager = function() {
 			SelectGround(position);
 	});
 	
+	window.bus.sub('deselect', function(){
+		_currentSelection = undefined;
+	});
+	
 	_me.Draw = function(){
 		if(!_currentSelection)
 			return;
