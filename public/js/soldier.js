@@ -1,6 +1,6 @@
 var NewSoldier = function(_position, _soldierType, _team)
 {
-	var _me = {id: makeid()};
+	var _me = {id: Global.NewId()};
 	var _selected = false;
 	var _availableFights, _availableMoves;
 	
