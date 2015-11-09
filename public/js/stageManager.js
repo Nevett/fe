@@ -34,13 +34,13 @@ var NewStageManager = function() {
 	}
 	
 	window.bus.sub('soldier move', function(soldier){
-		var oldPosition = _oldSoldierPositions[soldier];
+		var oldPosition = _oldSoldierPositions[soldier.id];
 		var newPosition = soldier.GetPosition();
 		
 		_tiles[oldPosition.x][oldPosition.y] = undefined;
 		_tiles[newPosition.x][newPosition.y] = soldier;
 		
-		_oldSoldierPositions[soldier] = {x: newPosition.x, y: newPosition.y};
+		_oldSoldierPositions[soldier.id] = {x: newPosition.x, y: newPosition.y};
 	});
 	
 	window.bus.sub('soldier place', function(soldier){
@@ -48,7 +48,7 @@ var NewStageManager = function() {
 		
 		_tiles[newPosition.x][newPosition.y] = soldier;
 		
-		_oldSoldierPositions[soldier] = {x: newPosition.x, y: newPosition.y};
+		_oldSoldierPositions[soldier.id] = {x: newPosition.x, y: newPosition.y};
 	});
 	
 	window.bus.sub('cursor click', function(position){

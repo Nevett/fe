@@ -1,9 +1,9 @@
-var StartGame = function()
+var StartGame = function(team)
 {
 	var _stageManager = NewStageManager();
 	
 	var _tileManager = NewTileManager();
-	var _soldierManager = NewSoldierManager(Math.round(Math.random()));
+	var _soldierManager = NewSoldierManager(team);
 	
 	var _control = NewControl();
 	

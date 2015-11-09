@@ -23,12 +23,26 @@
 		context.width = 800;
 		context.height = 600;
 		
+		var spritesInitialised, team;
+		
 		var sprite = new Image();
 		sprite.onload = function(){
 			InputHandler.Initialise(canvas);
 			SpriteHandler.Initialise(context, sprite);
-			StartGame();
+			
+			spritesInitialised = true;
+			
+			if(team)
+				StartGame(team);
 		};
+		
+		window.bus.sub('socket init', function(data){
+			team = data.team;
+			
+			if(spritesInitialised)
+				StartGame(team);
+		});
+		
 		sprite.src = "spritesheet.png";
 	});
 </script>

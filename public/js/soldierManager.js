@@ -7,7 +7,6 @@ var NewSoldierManager = function(teamNum){
 	_soldiers.push(NewSoldier({x: 2, y: 7}, Soldier.AXE, teamNum == 0 ? Team.ENEMY : Team.ME));
 	
 	window.bus.sub('socket soldier move', function(data){
-		debugger;
 		for(var i = 0; i < _soldiers.length; i++)
 			if(_soldiers[i].id == data.id)
 				_soldiers[i].MoveTo(data.pos);

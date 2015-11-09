@@ -4,6 +4,10 @@ var socket = io();
 
 socket.emit('init', {id: myId});
 
+socket.on('init', function(data){
+	window.bus.pub('socket init', data);
+});
+
 var fireSocketUpdate = function(update){
 	console.log(update);
 	socket.emit('update', update);

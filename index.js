@@ -19,11 +19,15 @@ app.get('/gameClass.js', function (req, res) {
 app.use(express.static('public'));
 
 var sockets = {};
+var teams = [0, 1];
 
 io.on('connection', function(socket){
 	var socketId;
 	
 	socket.on('disconnect', function(){
+		if(sockets[socketId])
+			teams.push(sockets[socketId].team);
+		
 		delete sockets[socketId];
 	});
 	
@@ -32,17 +36,21 @@ io.on('connection', function(socket){
 		
 		console.log("connected", msg.id);
 		
-		sockets[socketId] = socket;
+		var team = teams.splice(Math.floor(Math.random() * teams.length), 1)[0];
+		
+		socket.emit('init', {team: team});
+		
+		sockets[socketId] = {team: team, s: socket};
 	});
 	
 	socket.on('update', function(message){
 		message.event = 'socket ' + message.event;
 		
 		for(var s in sockets)
-			if(sockets[s] !== socket)
+			if(sockets[s].s !== socket)
 			{
 				console.log("Emit", s, message);
-				sockets[s].emit('update', message);
+				sockets[s].s.emit('update', message);
 			}
 	});
 });
