@@ -77,6 +77,10 @@ var NewSoldier = function(_position, _soldierType, _team)
 		return {min: 1, max: 1};
 	}
 	
+	_me.Selectable = function(){
+		return _team == Team.ME;
+	}
+	
 	_me.Update = function(){
 		// not currently needed
 	}
@@ -84,7 +88,7 @@ var NewSoldier = function(_position, _soldierType, _team)
 	_me.Draw = function(){
 		SpriteHandler.Draw(GetSprite(), {x: _position.x * 20, y: _position.y * 20});
 		
-		SpriteHandler.Draw(_team == Team.ENEMY ? Sprite.YOUR_UNIT : Sprite.THEIR_UNIT, {x: _position.x * 20, y: _position.y * 20});
+		SpriteHandler.Draw(_team == Team.ME ? Sprite.YOUR_UNIT : Sprite.THEIR_UNIT, {x: _position.x * 20, y: _position.y * 20});
 		
 		if(!_selected)
 			return;
