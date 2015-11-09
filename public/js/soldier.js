@@ -2,6 +2,7 @@ var NewSoldier = function(_position, _soldierType, _team)
 {
 	var _me = {id: makeid()};
 	var _selected = false;
+	var _availableFights, _availableMoves;
 	
 	var GetSprite = function(){
 		switch(_soldierType)
@@ -23,8 +24,18 @@ var NewSoldier = function(_position, _soldierType, _team)
 		_selected = false;
 	}
 	
-	_me.Select = function(){
+	_me.Select = function(availableFights, availableMoves){
 		_selected = true;
+		
+		_availableFights = availableFights;
+		_availableMoves = availableMoves;
+		
+		for(var i = 0; i < _availableMoves.length; i++)
+			for(var j = _availableFights.length-1; j >= 0; j--)
+				if(_availableFights[j].x == _availableMoves[i].x && _availableFights[j].y == _availableMoves[i].y)
+					_availableFights.splice(j, 1);
+			
+		console.log(_availableFights);
 	}
 	
 	_me.SelectGround = function(position){
@@ -44,8 +55,17 @@ var NewSoldier = function(_position, _soldierType, _team)
 		SpriteHandler.Draw(GetSprite(), {x: _position.x * 20, y: _position.y * 20});
 		
 		SpriteHandler.Draw(_team == Team.ENEMY ? Sprite.YOUR_UNIT : Sprite.THEIR_UNIT, {x: _position.x * 20, y: _position.y * 20});
-		if(_selected)
-			SpriteHandler.Draw(Sprite.SELECTION, {x: _position.x * 20, y: _position.y * 20});
+		
+		if(!_selected)
+			return;
+		
+		SpriteHandler.Draw(Sprite.SELECTION, {x: _position.x * 20, y: _position.y * 20});
+		
+		for(var i = 0; i < _availableMoves.length; i++)
+			SpriteHandler.Draw(Sprite.BLUE, {x: _availableMoves[i].x * 20, y: _availableMoves[i].y * 20});
+		
+		for(var i = 0; i < _availableFights.length; i++)
+			SpriteHandler.Draw(Sprite.RED, {x: _availableFights[i].x * 20, y: _availableFights[i].y * 20});
 	}
 	
 	window.bus.pub('soldier place', _me);

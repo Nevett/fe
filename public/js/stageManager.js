@@ -11,12 +11,24 @@ var NewStageManager = function() {
 			tiles[i][j] = undefined;
 	}
 	
+	var AvailableFightsFor = function(unit, availableMoves){
+		return [{x: 1, y: 1}, {x: 5, y: 1}, {x: 3, y: 2}];
+	}
+	
+	var AvailableMovesFor = function(unit){
+		return [{x: 1, y: 1}, {x: 4, y: 1}, {x: 2, y: 2}];
+	}
+	
 	var SelectUnit = function(unit){
 		if(currentSelection)
 			currentSelection.Deselect();
 		
 		currentSelection = unit;
-		currentSelection.Select();
+		
+		var availableMoves = AvailableMovesFor(unit);
+		var availableFights = AvailableFightsFor(unit, availableMoves);
+		
+		currentSelection.Select(availableFights, availableMoves);
 	}
 	
 	var SelectGround = function(position){
