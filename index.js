@@ -7,14 +7,6 @@ app.get('/', function(req, res){
 	res.sendfile('index.html');
 });
 
-app.get('/spritesheet.png', function (req, res) {
-    res.sendfile(__dirname + '\\spritesheet.png');
-});
-
-app.get('/gameClass.js', function (req, res) {
-    res.sendfile(__dirname + '\\gameClass.js');
-});
-
 app.use(express.static('public'));
 
 var sockets = {};
