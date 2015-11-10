@@ -5,9 +5,9 @@ var NewStageManager = function() {
 	var _tiles = [];
 	var _currentSelection;
 	
-	for(var i = 0; i < 35; i++) {
+	for(var i = 0; i < Global.ScreenSize().width; i++) {
 		_tiles[i] = [];
-		for(var j = 0; j < 25; j++)
+		for(var j = 0; j < Global.ScreenSize().height; j++)
 			_tiles[i][j] = undefined;
 	}
 	

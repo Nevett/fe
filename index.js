@@ -26,14 +26,16 @@ var game = {
 		{
 			id: 'Holmes',
 			pos: {x: 3, y: 6},
-			type: 1,
-			team: 0
+			type: 1, // Make soldier types enum available here
+			team: 0,
+			health: 90
 		},
 		{
 			id: 'Ace',
 			pos: {x: 3, y: 8},
-			type: 0, // Make soldier types enum available here
-			team: 1
+			type: 0,
+			team: 1,
+			health: 50
 		}
 	]
 };

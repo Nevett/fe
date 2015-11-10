@@ -7,6 +7,7 @@ var NewSoldier = function(initUnit, teamNum)
 	var _position = initUnit.pos;
 	var _soldierType = initUnit.type;
 	var _team = initUnit.team == teamNum;
+	var _health = initUnit.health;
 	
 	var _displayMoves, _displayFights;
 	
@@ -99,20 +100,23 @@ var NewSoldier = function(initUnit, teamNum)
 	}
 	
 	_me.Draw = function(){
-		SpriteHandler.Draw(GetSprite(), {x: _position.x * 20, y: _position.y * 20});
+		SpriteHandler.Draw(GetSprite(), {x: _position.x * Global.TileSize(), y: _position.y * Global.TileSize()});
 		
-		SpriteHandler.Draw(_team == Team.ME ? Sprite.YOUR_UNIT : Sprite.THEIR_UNIT, {x: _position.x * 20, y: _position.y * 20});
+		SpriteHandler.Draw(_team == Team.ME ? Sprite.YOUR_UNIT : Sprite.THEIR_UNIT, {x: _position.x * Global.TileSize(), y: _position.y * Global.TileSize()});
+		
+		SpriteHandler.Draw(Sprite.HEALTH_EMPTY, {x: _position.x * Global.TileSize(), y: _position.y * Global.TileSize()});
+		SpriteHandler.DrawInRect(Sprite.HEALTH_FULL, {x: _position.x * Global.TileSize(), y: _position.y * Global.TileSize()}, {x: 0, y: 0, width: Global.TileSize() * (_health / 100), height: Global.TileSize()});
 		
 		if(!_selected)
 			return;
 		
-		SpriteHandler.Draw(Sprite.SELECTION, {x: _position.x * 20, y: _position.y * 20});
+		SpriteHandler.Draw(Sprite.SELECTION, {x: _position.x * Global.TileSize(), y: _position.y * Global.TileSize()});
 		
 		for(var i = 0; i < _displayMoves.length; i++)
-			SpriteHandler.Draw(Sprite.BLUE, {x: _displayMoves[i].x * 20, y: _displayMoves[i].y * 20});
+			SpriteHandler.Draw(Sprite.BLUE, {x: _displayMoves[i].x * Global.TileSize(), y: _displayMoves[i].y * Global.TileSize()});
 		
 		for(var i = 0; i < _displayFights.length; i++)
-			SpriteHandler.Draw(Sprite.RED, {x: _displayFights[i].x * 20, y: _displayFights[i].y * 20});
+			SpriteHandler.Draw(Sprite.RED, {x: _displayFights[i].x * Global.TileSize(), y: _displayFights[i].y * Global.TileSize()});
 	}
 	
 	window.bus.pub('soldier place', _me);
