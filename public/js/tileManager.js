@@ -1,4 +1,4 @@
-var NewTileManager = function(){
+var NewTileManager = function(initData){
 	var _me = {id: Global.NewId()};
 	
 	var _tiles = [];
@@ -8,7 +8,7 @@ var NewTileManager = function(){
 		_tiles[i] = [];
 		for(var j = 0; j < Global.ScreenSize().height; j++)
 		{
-			_tiles[i][j] = NewTile(i, j, i == 0 || i == Global.ScreenSize().width-1 || j == 0 || j == Global.ScreenSize().height-1 ? Tiles.BRICK : Tiles.GRASS);
+			_tiles[i][j] = NewTile(i, j, initData.map[i][j] == 1 ? Tiles.BRICK : Tiles.GRASS);
 		}
 	}
 	
