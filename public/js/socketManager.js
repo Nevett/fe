@@ -1,8 +1,11 @@
-var myId = Global.NewId(true);
+var socketId = Global.QueryStringValue("id");
+
+if(!socketId)
+	socketId =  Global.NewId(true);
 
 var socket = io();
 
-socket.emit('init', {id: myId});
+socket.emit('init', {id: socketId});
 
 socket.on('init', function(data){
 	window.bus.pub('socket init', data);

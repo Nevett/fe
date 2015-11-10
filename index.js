@@ -10,11 +10,36 @@ app.get('/', function(req, res){
 app.use(express.static('public'));
 
 var sockets = {};
-var teams = [0, 1];
+
+var game = {
+	players: {
+		'Harry': {
+			connected: false,
+			team: 0
+		},
+		'Laurie': {
+			connected: false,
+			team: 1
+		}
+	},
+	units: [
+		{
+			id: 'Holmes',
+			pos: {x: 3, y: 6},
+			type: 1,
+			team: 0
+		},
+		{
+			id: 'Ace',
+			pos: {x: 13, y: 10},
+			type: 0, // Make soldier types enum available here
+			team: 1
+		}
+	]
+};
 
 app.set('port', process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 3000);
 app.set('ip', process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1");
-
 
 var server = http.Server(app);
 
@@ -25,35 +50,37 @@ server.listen(app.get('port') ,app.get('ip'), function () {
 var io = require('socket.io')(server);
 
 io.on('connection', function(socket){
-	var socketId;
+	var userId;
 	
 	socket.on('disconnect', function(){
-		if(sockets[socketId])
-			teams.push(sockets[socketId].team);
+		if(!userId)
+			return;
+	
+		console.log("disconnected", userId);
 		
-		delete sockets[socketId];
+		game.players[userId].connected = false;
+		delete sockets[userId];
 	});
 	
 	socket.on('init', function(msg){
-		socketId = msg.id;
+		userId = msg.id;
 		
 		console.log("connected", msg.id);
 		
-		var team = teams.splice(Math.floor(Math.random() * teams.length), 1)[0];
+		game.players[userId].connected = true;
+		sockets[userId] = this;
 		
-		socket.emit('init', {team: team});
-		
-		sockets[socketId] = {team: team, s: socket};
+		socket.emit('init', game);
 	});
 	
 	socket.on('update', function(message){
 		message.event = 'socket ' + message.event;
 		
-		for(var s in sockets)
-			if(sockets[s].s !== socket)
+		for(var player in game.players)
+			if(player !== userId)
 			{
-				console.log("Emit", s, message);
-				sockets[s].s.emit('update', message);
+				console.log("Send to", player, message);
+				sockets[player].emit('update', message);
 			}
 	});
 });
