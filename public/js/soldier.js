@@ -1,8 +1,12 @@
-var NewSoldier = function(_position, _soldierType, _team)
+var NewSoldier = function(initUnit, teamNum)
 {
-	var _me = {id: Global.NewId()};
+	var _me = {id: initUnit.id};
 	var _selected = false;
 	var _availableFights, _availableMoves;
+	
+	var _position = initUnit.pos;
+	var _soldierType = initUnit.type;
+	var _team = initUnit.team == teamNum;
 	
 	var _displayMoves, _displayFights;
 	
@@ -40,7 +44,8 @@ var NewSoldier = function(_position, _soldierType, _team)
 		_displayMoves = [];
 		
 		for(var i = 0; i < _availableMoves.length; i++)
-			_displayMoves.push(_availableMoves[i]);
+			if(!(_availableMoves[i].x == _position.x && _availableMoves[i].y == _position.y))
+				_displayMoves.push(_availableMoves[i]);
 		
 		for(var i = 0; i < _availableFights.length; i++) {
 			var displayFight = true;
@@ -62,8 +67,6 @@ var NewSoldier = function(_position, _soldierType, _team)
 			if(_availableMoves[i].x == position.x && _availableMoves[i].y == position.y)
 			{
 				_me.MoveTo(position);
-		
-				window.bus.pub('soldier move', _me);
 			}
 		
 		_me.Deselect();
@@ -71,6 +74,8 @@ var NewSoldier = function(_position, _soldierType, _team)
 	
 	_me.MoveTo = function(position){
 		_position = {x: position.x, y: position.y};
+
+		window.bus.pub('soldier move', _me);
 	}
 	
 	_me.MovementRange = function(){
@@ -83,6 +88,10 @@ var NewSoldier = function(_position, _soldierType, _team)
 	
 	_me.Selectable = function(){
 		return _team == Team.ME;
+	}
+	
+	_me.Team = function(){
+		return _team;
 	}
 	
 	_me.Update = function(){

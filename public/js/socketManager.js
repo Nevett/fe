@@ -17,7 +17,8 @@ var fireSocketUpdate = function(update){
 }
 
 window.bus.sub('soldier move', function(soldier){
-	socket.emit('update', {event: 'soldier move', data: {id: soldier.id, pos: soldier.GetPosition()}});
+	if(soldier.Team() == Team.ME)
+		socket.emit('update', {event: 'soldier move', data: {id: soldier.id, pos: soldier.GetPosition()}});
 });
 
 socket.on('update', function(message){

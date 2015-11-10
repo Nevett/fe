@@ -31,7 +31,7 @@ var game = {
 		},
 		{
 			id: 'Ace',
-			pos: {x: 13, y: 10},
+			pos: {x: 3, y: 8},
 			type: 0, // Make soldier types enum available here
 			team: 1
 		}
@@ -74,10 +74,19 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on('update', function(message){
+		console.log(message);
+		switch(message.event){
+			case 'soldier move':
+				for(var i = 0; i < game.units.length; i++)
+					if(game.units[i].id == message.data.id)
+						game.units[i].pos = message.data.pos;
+				break;
+		}
+		
 		message.event = 'socket ' + message.event;
 		
 		for(var player in game.players)
-			if(player !== userId)
+			if(player !== userId && game.players[player].connected)
 			{
 				console.log("Send to", player, message);
 				sockets[player].emit('update', message);

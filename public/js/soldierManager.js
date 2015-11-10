@@ -4,7 +4,7 @@ var NewSoldierManager = function(units, teamNum){
 	var _soldiers = [];
 	
 	for(var i = 0; i < units.length; i++)
-		_soldiers.push(NewSoldier(units[i].pos, units[i].type, teamNum == units[i].team ? Team.ME : Team.ENEMY));
+		_soldiers.push(NewSoldier(units[i], teamNum));
 	
 	window.bus.sub('socket soldier move', function(data){
 		for(var i = 0; i < _soldiers.length; i++)
