@@ -22,7 +22,7 @@ var StartGame = function(initData)
 		InputHandler.Update();
 		
 		updateRunning = false;
-	}, 1 / 60);
+	}, 1 / 144);
 	
 	var Draw = function(){
 		SpriteHandler.Clear();
